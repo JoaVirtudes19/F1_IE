@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+
+{% block tituloPagina %} Inicio {% endblock %}
+
+{% block contenido %}
+<main role="main">
+    <div class="container">
+        <h1 class="text-center">Dashboard</h1>
+        {% for chart in charts %}
+        <img src="data:image/png;base64,{{chart}}" alt="">
+        {% empty %}
+        <h4>Ha ocurrido un problema a generar las gráficas</h4>
+        {% endfor %}
+    </div>
+    </main>
+{% endblock %}

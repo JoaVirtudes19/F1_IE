@@ -1,0 +1,5 @@
+
+.DS_Store
+web/migrations/__pycache__/__init__.cpython-311.pyc
+web/migrations/__pycache__/__init__.cpython-310.pyc
+*.pyc
