@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+
+{% block tituloPagina %} Inicio {% endblock %}
+
+{% block contenido %}
+<main role="main">
+    <div class="container text-center">
+        <h1>Cargar datos sobre pilotos  y circuitos en la base de datos</h1>
+        <form action="" method="POST">
+            {% csrf_token %}
+            <input type="submit" value="Cargar" class="btn btn-primary">
+        </form>
+    </main>
+{% endblock %}

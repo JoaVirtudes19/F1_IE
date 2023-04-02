@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, HttpResponseRedirect
 import matplotlib.pyplot as plt
 import matplotlib as mpl
 import io
@@ -7,15 +7,19 @@ mpl.use('Agg')
 import fastf1 as ff1
 import numpy as np
 from matplotlib.collections import LineCollection
+from web.populateDB import populate_drivers, populate_circuits
+from web.forms import DriverCircuitYear
+import requests
 # Create your views here.
 
 
-def generarF1():
+def generarF1(year,driver,circuit_name):
     ff1.Cache.enable_cache('./f1cache')  # replace with your cache directory
-    year = 2021
-    wknd = 9
+    request = requests.get('http://ergast.com/api/f1/{}/results.json?limit=1000'.format(year))
+    data = request.json()
+    wknd = int([ race['round'] for race in data['MRData']['RaceTable']['Races'] if race['Circuit']['circuitName'] == circuit_name][0])
     ses = 'R'
-    driver = 'RIC'
+    driver = driver
     colormap = mpl.cm.plasma
     session = ff1.get_session(year, wknd, ses)
     weekend = session.event
@@ -82,7 +86,7 @@ def generar(n,title):
     return uri
 
 def inicio(request):
-    graficas = [generar(10,"primera"),generarF1(),generar(20,"segunda")]
+    graficas = []
     return render(request,'inicio.html',{'charts':graficas})
 
 
@@ -90,3 +94,28 @@ def inicio(request):
 
 def predecir(request):
     return render(request,'predecir.html')
+
+
+def cargar(request):
+    if request.method == "POST":
+        populate_drivers()
+        populate_circuits()
+        return HttpResponseRedirect('/')
+
+    return render(request,'populateDB.html')
+
+
+def velocidad(request):
+    if request.method == "POST":
+        form = DriverCircuitYear(request.POST)
+        if form.is_valid():
+            driver = form.cleaned_data['driver']
+            circuit = form.cleaned_data['circuit']
+            year = int(form.cleaned_data['year'])
+            try:
+                chart = generarF1(year,driver.code,circuit.name)
+            except:
+                chart = None
+        return render(request,'velocidades.html', {'form':form,'chart':chart})
+    form = DriverCircuitYear()
+    return render(request,'velocidades.html', {'form':form})

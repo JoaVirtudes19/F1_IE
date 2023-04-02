@@ -20,5 +20,7 @@ from web.views import *
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('',inicio),
-    path('predecir/',predecir)
+    path('predecir/',predecir),
+    path('cargar/',cargar),
+    path('velocidad/',velocidad)
 ]
