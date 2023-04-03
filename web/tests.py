@@ -1,10 +1,20 @@
-#from django.test import TestCase
-
+import matplotlib.pyplot as plt
 import pandas as pd
+from timple.timedelta import strftimedelta
+import fastf1
+import fastf1.plotting
+from fastf1.core import Laps
+from datetime import datetime
+import requests
 
 
+request = requests.get('http://ergast.com/api/f1/current/last.json')
+data = request.json()
+ergast_race = data['MRData']['RaceTable']['Races'][0]
+session = fastf1.get_session(int(ergast_race['season']), ergast_race['raceName'], 'R')
+session.load()
 
+    ##############################################################################
+    # First, we need to get an array of all drivers.
 
-drivers = pd.read_csv('web/data/drivers.csv', na_values=["\\N"], parse_dates=['dob'])
-drivers['number'] = drivers['number'].astype('Int64')
-print(drivers)
+print(session.results)

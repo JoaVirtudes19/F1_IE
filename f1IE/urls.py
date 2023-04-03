@@ -20,7 +20,8 @@ from web.views import *
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('',inicio),
-    path('predecir/',predecir),
-    path('cargar/',cargar),
-    path('velocidad/',velocidad)
+    path('predict/',predecir),
+    path('populate/',cargar),
+    path('speed/',velocidad),
+    path('points_stats/',points_stats)
 ]
