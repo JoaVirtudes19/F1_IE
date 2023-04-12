@@ -19,9 +19,10 @@ from web.views import *
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('',inicio),
-    path('predict/',predecir),
-    path('populate/',cargar),
-    path('speed/',velocidad),
-    path('points_stats/',points_stats)
+    path('', latest_results),
+    path('predict/', predict_results),
+    path('populate/', populate_db),
+    path('speed/chart', telemetry_speed),
+    path('speed/compare', compare_speed),
+    path('points_stats/', points_stats)
 ]
