@@ -1,8 +1,9 @@
 from django.shortcuts import render, HttpResponseRedirect
 
-from web.forms import DriverCircuitYear, CompareSpeed
-from web.populateDB import populate_drivers, populate_circuits
+from web.forms import DriverCircuitYear, CompareSpeed, Prediction
+from web.populateDB import populate_drivers, populate_circuits,populate_constructors
 from web.charts import ChartFactory
+from web.predict import predict
 
 
 def latest_results(request):
@@ -13,7 +14,34 @@ def latest_results(request):
 
 
 def predict_results(request):
-    return render(request, 'predict_results.html')
+    if request.method == "POST":
+        form = Prediction(request.POST)
+        if form.is_valid():
+            driver = form.cleaned_data['driver']
+            circuit = form.cleaned_data['circuit']
+            year = int(form.cleaned_data['year'])
+            constructor = form.cleaned_data['constructor']
+            grid = int(form.cleaned_data['grid'])
+            year_round = int(form.cleaned_data['year_round'])
+            weather={'weather_warm':int(form.cleaned_data['warm']),
+                    'weather_cold':int(form.cleaned_data['cold']),
+                    'weather_dry':int(form.cleaned_data['dry']),
+                    'weather_wet':int(form.cleaned_data['wet']),
+                    'weather_cloudy':int(form.cleaned_data['cloudy'])}
+
+            results = predict(driver.driver_id,
+                    grid_pos,
+                    year,
+                    constructor.constructor_id,
+                    circuit.circuit_id,
+                    year_round,
+                    weather)
+
+
+
+        return render(request, 'predict_results.html', {'form': form})
+    form = Prediction()
+    return render(request, 'predict_results.html',{'form': form})
 
 
 def points_stats(request):
@@ -24,6 +52,7 @@ def populate_db(request):
     if request.method == "POST":
         populate_drivers()
         populate_circuits()
+        populate_constructors()
         return HttpResponseRedirect('/')
 
     return render(request, 'populateDB.html')

@@ -20,3 +20,12 @@ class Circuit(models.Model):
     
     def __str__(self) -> str:
         return self.name
+
+
+
+class Constructor(models.Model):
+    name = models.CharField(max_length=200,unique=True)
+    constructor_id = models.IntegerField()
+    
+    def __str__(self) -> str:
+        return self.name

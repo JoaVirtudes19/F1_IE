@@ -2,7 +2,7 @@ import fastf1 as ff1
 from datetime import datetime
 import requests
 import pandas as pd
-from web.models import Driver,Circuit
+from web.models import Driver,Circuit,Constructor
 
 
 
@@ -22,3 +22,8 @@ def populate_circuits():
     objs = [Circuit(name=row['name'], circuit_id=row['circuitId']) for index, row in circuits.iterrows()]
     Circuit.objects.bulk_create(objs)
 
+def populate_constructors():
+    Constructor.objects.all().delete()
+    constructors = pd.read_csv('web/data/constructors.csv', na_values=["\\N"])
+    objs = [Constructor(name=row['name'], constructor_id=row['constructorId']) for index, row in constructors.iterrows()]
+    Constructor.objects.bulk_create(objs)
