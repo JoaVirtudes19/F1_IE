@@ -20,11 +20,12 @@ def predict(driver,
                      'weather_wet':0,
                      'weather_cloudy':0}
             ):
+    
 
     
     # Crear nueva instancia para predecir
     instance = pd.DataFrame()
-    instance['driverId'] = driver
+    instance['driverId'] = [driver]
     instance['constructorId'] = constructor
     instance['grid'] = grid_pos
     instance['year'] = year
@@ -38,7 +39,6 @@ def predict(driver,
 
 
     instance['grid'] = instance['grid'].clip(upper=20)
-    instance['position'] = instance['position'].clip(upper=20)
     columns_to_scale = ['year']
     instance[columns_to_scale] = scaler.transform(instance[columns_to_scale])
     columns_to_replace = ['weather_warm', 'weather_cold', 'weather_dry', 'weather_wet', 'weather_cloudy']
@@ -46,7 +46,7 @@ def predict(driver,
     drivers = instance['driverId']
     constructors = instance['constructorId']
     circuits = instance['circuitId']
-    X = instance.drop(['driverId', 'constructorId', 'circuitId', 'position'], axis=1) 
+    X = instance.drop(['driverId', 'constructorId', 'circuitId'], axis=1) 
 
     prediction = model.predict([drivers, constructors, circuits, X], verbose=0)
 

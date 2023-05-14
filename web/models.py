@@ -9,6 +9,7 @@ class Driver(models.Model):
     name = models.CharField(max_length=200,unique=True)
     code = models.CharField(max_length=3,null=True)
     driver_id = models.IntegerField()
+    url = models.CharField(max_length=1000)
 
     def __str__(self) -> str:
         return self.name
@@ -26,6 +27,7 @@ class Circuit(models.Model):
 class Constructor(models.Model):
     name = models.CharField(max_length=200,unique=True)
     constructor_id = models.IntegerField()
+    url = models.CharField(max_length=1000)
     
     def __str__(self) -> str:
         return self.name

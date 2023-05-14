@@ -42,6 +42,7 @@ class ChartFactory:
 
     @staticmethod
     def generate_times(session_type):
+        plt.rcParams["figure.figsize"] = (7, 5)
         fastf1.Cache.enable_cache('./f1cache')  # replace with your cache directory
         fastf1.plotting.setup_mpl(mpl_timedelta_support=True, color_scheme=None, misc_mpl_mods=False)
 
@@ -147,6 +148,8 @@ class ChartFactory:
     def generate_VS(year, driver1, driver2, circuit_name):
         fastf1.Cache.enable_cache('./f1cache')
 
+        plt.rcParams["figure.figsize"] = (20, 20)
+
         request = requests.get('http://ergast.com/api/f1/{}/results.json?limit=1000'.format(year))
         data = request.json()
         wknd = int([race['round'] for race in data['MRData']['RaceTable']['Races'] if
@@ -176,29 +179,29 @@ class ChartFactory:
         """
         ax0.plot(driver1_tel['Distance'], driver1_tel['Speed'], color=driver1_color, label=driver1)
         ax0.plot(driver2_tel['Distance'], driver2_tel['Speed'], color=driver2_color, label=driver2)
-        ax0.set_ylabel('Speed in km/h')
+        ax0.set_ylabel('Speed in km/h', fontsize=18)
         ax0.legend()
 
         ax1.plot(driver1_tel['Distance'], driver1_tel['Throttle'], color=driver1_color, label=driver1)
         ax1.plot(driver2_tel['Distance'], driver2_tel['Throttle'], color=driver2_color, label=driver2)
-        ax1.set_ylabel('Throttle %')
+        ax1.set_ylabel('Throttle %', fontsize=18)
 
         ax2.plot(driver1_tel['Distance'], driver1_tel['Brake'], color=driver1_color, label=driver1)
         ax2.plot(driver2_tel['Distance'], driver2_tel['Brake'], color=driver2_color, label=driver2)
-        ax2.set_ylabel('Brake')
+        ax2.set_ylabel('Brake', fontsize=18)
 
         ax3.plot(driver1_tel['Distance'], driver1_tel['nGear'], color=driver1_color, label=driver1)
         ax3.plot(driver2_tel['Distance'], driver2_tel['nGear'], color=driver2_color, label=driver2)
-        ax3.set_ylabel('Gear')
+        ax3.set_ylabel('Gear', fontsize=18)
 
         ax4.plot(driver1_tel['Distance'], driver1_tel['RPM'], color=driver1_color, label=driver1)
         ax4.plot(driver2_tel['Distance'], driver2_tel['RPM'], color=driver2_color, label=driver2)
-        ax4.set_ylabel('RPM')
+        ax4.set_ylabel('RPM', fontsize=18)
 
         ax5.plot(driver1_tel['Distance'], driver1_tel['DRS'], color=driver1_color, label=driver1)
         ax5.plot(driver2_tel['Distance'], driver2_tel['DRS'], color=driver2_color, label=driver2)
-        ax5.set_xlabel('Distance in m')
-        ax5.set_ylabel('DRS')
+        ax5.set_xlabel('Distance in m', fontsize=20)
+        ax5.set_ylabel('DRS', fontsize=18)
 
         session_dict = {'FP1': 'Practice 1',
                         'FP2': 'Practice 2',
@@ -212,7 +215,6 @@ class ChartFactory:
                      f"{driver1} vs {driver2}",
                      size='xx-large')
 
-        plt.rcParams["figure.figsize"] = (500, 500)
 
         buf = io.BytesIO()
         fig.savefig(buf, format='png')

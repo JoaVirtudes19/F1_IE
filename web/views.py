@@ -4,7 +4,7 @@ from web.forms import DriverCircuitYear, CompareSpeed, Prediction
 from web.populateDB import populate_drivers, populate_circuits,populate_constructors
 from web.charts import ChartFactory
 from web.predict import predict
-
+from web.scrape import get_constructor_img,get_driver_img
 
 def latest_results(request):
     chart_q = ChartFactory.generate_times('Q')
@@ -30,19 +30,27 @@ def predict_results(request):
                     'weather_cloudy':int(form.cleaned_data['cloudy'])}
 
             results = predict(driver.driver_id,
-                    grid_pos,
+                    grid,
                     year,
                     constructor.constructor_id,
                     circuit.circuit_id,
                     year_round,
                     weather)
+            position = results.iloc[0]['predictions']
+            url_constructor = get_constructor_img(constructor.constructor_id)
+            url_driver = get_driver_img(driver.driver_id)
 
 
-
-        return render(request, 'predict_results.html', {'form': form})
+        return render(request, 'predict_results.html', {'form': form, 'position':int(position),'url_constructor':url_constructor,
+                                                        'url_driver':url_driver,'driver':driver.name,'constructor':constructor.name,'circuit':circuit.name,'grid':grid})
     form = Prediction()
     return render(request, 'predict_results.html',{'form': form})
 
+
+
+
+def stats(request):
+    return render(request, 'stats.html')
 
 def points_stats(request):
     return render(request, 'points_charts.html')

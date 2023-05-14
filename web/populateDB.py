@@ -11,7 +11,7 @@ def populate_drivers():
     Driver.objects.all().delete()
     drivers = pd.read_csv('web/data/drivers.csv', na_values=["\\N"], parse_dates=['dob'])
     drivers['number'] = drivers['number'].astype('Int64')
-    objs = [Driver(name=row['forename'] + ' '+ row['surname'], code=row['code'], driver_id=row['driverId']) for index, row in drivers.iterrows()]
+    objs = [Driver(name=row['forename'] + ' '+ row['surname'], code=row['code'], driver_id=row['driverId'],url=row['url']) for index, row in drivers.iterrows()]
     Driver.objects.bulk_create(objs)
 
 
@@ -25,5 +25,5 @@ def populate_circuits():
 def populate_constructors():
     Constructor.objects.all().delete()
     constructors = pd.read_csv('web/data/constructors.csv', na_values=["\\N"])
-    objs = [Constructor(name=row['name'], constructor_id=row['constructorId']) for index, row in constructors.iterrows()]
+    objs = [Constructor(name=row['name'], constructor_id=row['constructorId'],url=row['url']) for index, row in constructors.iterrows()]
     Constructor.objects.bulk_create(objs)

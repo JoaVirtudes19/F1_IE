@@ -24,5 +24,6 @@ urlpatterns = [
     path('populate/', populate_db),
     path('speed/chart', telemetry_speed),
     path('speed/compare', compare_speed),
-    path('points_stats/', points_stats)
+    path('points_stats/', points_stats),
+    path('stats/',stats)
 ]
