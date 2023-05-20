@@ -25,7 +25,7 @@ class Prediction(forms.Form):
     circuit = forms.ModelChoiceField(required=True,label="Pick a circuit", queryset=Circuit.objects.all().order_by("name"))
     year = forms.ChoiceField(choices=( (x,x) for x in range(datetime.now().year,1949,-1)),required=True,label="Pick a year")
     grid = forms.ChoiceField(choices=( (x,x) for x in range(1,21)),required=True,label="Pick an initial position")
-    year_round = forms.ChoiceField(choices=( (x,x) for x in range(23,0,-1)),required=True,label="Pick a year round")
+    year_round = forms.ChoiceField(choices=( (x,x) for x in range(1,24)),required=True,label="Pick a year round")
     warm = forms.BooleanField(label='Warm',required=False)
     cold = forms.BooleanField(label='Cold',required=False)
     dry = forms.BooleanField(label='Dry',required=False)
